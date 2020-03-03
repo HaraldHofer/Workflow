@@ -1,0 +1,18 @@
+name: "Workflow"
+
+navbar:
+  title: "Workflow"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "R Markdown on Github Pages"
+      href: Workflow_RmdOnGitPages.html
+    - text: "R and Python in RStudio"
+      href: Workflow_RandPythonInRstudio.html
+      
+output_dir: "docs"
+output:
+  html_document:
+    theme: flatly
+    toc: true  
+    toc_float: true
