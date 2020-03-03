@@ -8,22 +8,53 @@ date: "3 3 2020"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+## R Code
 
-```{r cars}
-summary(cars)
+```{r}
+library(tidyverse)
+
+cars %>%
+  ggplot(aes(x = speed, y = dist)) +
+    stat_density_2d(aes(fill = ..density..), geom = "raster", contour = FALSE, interpolate = TRUE) +
+    geom_point(color = "white", alpha = 0.5, size = 1) +
+    scale_fill_continuous(type = "viridis") +
+    scale_x_continuous(expand = c(0, 0)) +
+    scale_y_continuous(expand = c(0, 0)) +
+    theme_minimal()
+
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+## Python code
+```{r}
+# install.packages("reticulate") # if not installed
+library(reticulate)
+
+# use_python("C:/Users/hhofer01/AppData/Local/Continuum/anaconda3")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+To access objects (from default R or) created in R-chunks use "r." as prefix
+
+```{python}
+import pandas as pd
+import numpy as np
+```
+
+```{python}
+# change "r" in chunk-header to "python
+print(r.cars.head())
+
+py_cars = r.cars * 1.9
+```
+
+
+To access Python-objects in R-chunks use "py$" as prefix. Indexing works like in R.
+
+```{r}
+py$py_cars[1:8, ]
+```
+
