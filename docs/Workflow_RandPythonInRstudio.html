@@ -411,24 +411,57 @@ div.tocify {
 </div>
 
 
-<div id="r-markdown" class="section level2">
-<h2>R Markdown</h2>
-<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
-<p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
-<pre class="r"><code>summary(cars)</code></pre>
-<pre><code>##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00</code></pre>
+<p>This is a good brief into for using Python in RStudio: <a href="https://rstudio.github.io/reticulate/articles/r_markdown.html" class="uri">https://rstudio.github.io/reticulate/articles/r_markdown.html</a></p>
+<div id="r-code" class="section level2">
+<h2>R Code</h2>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## -- Attaching packages ------------------------------------------------------------------------------------------------------------------------- tidyverse 1.2.1 --</code></pre>
+<pre><code>## v ggplot2 3.1.1       v purrr   0.3.2  
+## v tibble  2.1.1       v dplyr   0.8.0.1
+## v tidyr   0.8.3       v stringr 1.4.0  
+## v readr   1.3.1       v forcats 0.4.0</code></pre>
+<pre><code>## -- Conflicts ---------------------------------------------------------------------------------------------------------------------------- tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>cars %&gt;%
+  ggplot(aes(x = speed, y = dist)) +
+    stat_density_2d(aes(fill = ..density..), geom = &quot;raster&quot;, contour = FALSE, interpolate = TRUE) +
+    geom_point(color = &quot;white&quot;, alpha = 0.5, size = 1) +
+    scale_fill_continuous(type = &quot;viridis&quot;) +
+    scale_x_continuous(expand = c(0, 0)) +
+    scale_y_continuous(expand = c(0, 0)) +
+    theme_minimal()</code></pre>
+<p><img src="Workflow_RandPythonInRstudio_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 </div>
-<div id="including-plots" class="section level2">
-<h2>Including Plots</h2>
-<p>You can also embed plots, for example:</p>
-<p><img src="Workflow_RandPythonInRstudio_files/figure-html/pressure-1.png" width="672" /></p>
-<p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
+<div id="python-code" class="section level2">
+<h2>Python code</h2>
+<pre class="r"><code># install.packages(&quot;reticulate&quot;) # if not installed
+library(reticulate)
+use_python(&quot;C:/Users/hhofer01/AppData/Local/Continuum/anaconda3/&quot;)</code></pre>
+<p>To access objects (from default R or) created in R-chunks use “r.” as prefix</p>
+<pre class="python"><code>import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import os
+os.environ[&quot;QT_QPA_PLATFORM_PLUGIN_PATH&quot;] = &quot;C:/Users/hhofer01/AppData/Local/Continuum/anaconda3/Library/plugins/platforms&quot;</code></pre>
+<pre class="python"><code># change &quot;r&quot; in chunk-header to &quot;python
+print(r.cars.head())</code></pre>
+<pre><code>##    speed  dist
+## 0    4.0   2.0
+## 1    4.0  10.0
+## 2    7.0   4.0
+## 3    7.0  22.0
+## 4    8.0  16.0</code></pre>
+<pre class="python"><code>py_cars = r.cars * 1.9</code></pre>
+<pre class="python"><code>sns.set(style = &quot;ticks&quot;)
+sns.jointplot(x = r.cars[&quot;speed&quot;], y = r.cars[&quot;dist&quot;], kind = &quot;hex&quot;)</code></pre>
+<pre><code>## &lt;seaborn.axisgrid.JointGrid object at 0x0000000029CB9848&gt;</code></pre>
+<pre class="python"><code>plt.show()</code></pre>
+<p><img src="Workflow_RandPythonInRstudio_files/figure-html/unnamed-chunk-5-1.png" width="576" /></p>
+<p>To access Python-objects in R-chunks use “py$” as prefix. Indexing works like in R.</p>
+<pre class="r"><code>hist(py$py_cars[, 1], breaks = 7, col = &quot;deepskyblue&quot;)</code></pre>
+<p><img src="Workflow_RandPythonInRstudio_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
 
 
